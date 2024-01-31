@@ -1,31 +1,55 @@
 import {useState} from 'react';
+import {FaTrashAlt} from 'react-icons/fa';
 const Content = () => {
-    const [name, setName] = useState('karthik');
-    //gotchas
-    const [count, setCount] = useState(0);
-    const handleNameChange = () => {
-      const names = ['karthik', 'arjun', 'kausik'];
-      const int = Math.floor(Math.random()*3);
-      setName(names[int]);
+    const [items, setItems] = useState([
+        {
+            id: 1,
+            checked: false,
+            item: 'one half pound bag of cocoa covered almonds unsalted'
+        },
+        {
+            id: 2,
+            checked: true,
+            item: 'item 2'
+        },
+        {
+            id: 3,
+            checked: false,
+            item: 'item 3'
+        },
+    ]);
+    const handleCheck = (id) => {
+        const listItems = items.map((it)=>{
+            if(it.id === id){
+                return {...it, checked: !it.checked}
+            }else{
+                return it;
+            }
+        })
+        setItems(listItems);
+        localStorage.setItem('myShoppingList', JSON.stringify(listItems));
     }
-
-    const handleClick2 = () => {
-        //count is actually the value of count when brought into the function
-        setCount(count+1);
-        setCount(count+1); //does not add +1 to count as count is simply count+1 twice without actually changing in every step
-        console.log(count);
-    }
-    const handleClick3 = (e) => {
-        console.log("event target: ", e.target);
+    const handleDelete = (id) => {
+        const listItems = items.filter((it) => it.id !== id);
+        setItems(listItems);
+        localStorage.setItem('myShoppingList', JSON.stringify(listItems));
     }
     return (
         <main>
-            <p onDoubleClick={(e)=>handleClick3(e)}>
-                {name} , Hello {name}!
-            </p>
-            <button onClick={handleNameChange}>Please click to change name</button>
-            <button onClick={()=>handleClick2()}>also click me</button>
-            <button onClick={(e)=>handleClick3(e)}>finally click me</button>
+            {items.length? 
+                (<ul>
+                    {items.map((it) => (
+                        <li className="item" key={it.id}>
+                            <input type="checkbox" checked={it.checked} onChange={() => handleCheck(it.id)}></input>
+                            <label onDoubleClick={()=>handleCheck(it.id)} style={it.checked ? {textDecoration: 'line-through'}: null}>{it.item}</label>
+                            <FaTrashAlt role='button' tabIndex="0" onClick={()=>handleDelete(it.id)} />
+                        </li>
+                    ))}
+                </ul>):
+                (
+                    <p style={{marginTop: '2rem'}}>Your list is empty</p>
+                )
+            }
         </main>
     )
 }
