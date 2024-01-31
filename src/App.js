@@ -6,16 +6,13 @@ import Footer from './Footer';
 import {useState, useEffect} from 'react';
 //can edit the functional components
 function App() {
-  const [items, setItems] = useState(JSON.parse(localStorage.getItem('shoppingList')) || []);
+const API_URL = 'http://localhost:3500/items';
 
-/*   console.log('hi');
-  useEffect(()=>{console.log('inside render')}, [items]);
-  //last of every specified render dependency state changes
-  console.log('hello'); */
+  const [items, setItems] = useState([]);
 
   useEffect(()=>{
-    JSON.stringify(items);
-  }, [items])
+
+  }, [])
   
   const [newItems, setNewItems] = useState('');
   const [search, setSearch] = useState('');
