@@ -3,43 +3,53 @@ import SearchItem from './SearchItem';
 import AddItems from './AddItems';
 import Header1 from './Header1';
 import Footer from './Footer';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 //can edit the functional components
 function App() {
-    const [items, setItems] = useState(JSON.parse(localStorage.getItem('shoppingList')));
-    const setAndSaveItems = (listItems) => {
-      setItems(listItems);
-      localStorage.setItem('shoppingList', JSON.stringify(listItems));
-    }
-    const [newItems, setNewItems] = useState('');
-    const [search, setSearch] = useState('');
-    const addItem = (newItems) => {
-      const id = items.length ? items[items.length-1].id+1 : 1;
-      const myNewItem = {id, checked:false, item: newItems};
-      const listItems = [...items, myNewItem];
-      setAndSaveItems(listItems);
-    }
-    const handleCheck = (id) => {
-      const listItems = items.map((it)=>{
-          if(it.id === id){
-              return {...it, checked: !it.checked}
-          }else{
-              return it;
-          }
-      })
-      setAndSaveItems(listItems);
+  const [items, setItems] = useState(JSON.parse(localStorage.getItem('shoppingList')) || []);
+
+/*   console.log('hi');
+  useEffect(()=>{console.log('inside render')}, [items]);
+  //last of every specified render dependency state changes
+  console.log('hello'); */
+
+  useEffect(()=>{
+    JSON.stringify(items);
+  }, [items])
+  
+  const [newItems, setNewItems] = useState('');
+  const [search, setSearch] = useState('');
+  
+  const addItem = (newItems) => {
+    const id = items.length ? items[items.length-1].id+1 : 1;
+    const myNewItem = {id, checked:false, item: newItems};
+    const listItems = [...items, myNewItem];
+    setItems(listItems);
   }
+  
+  const handleCheck = (id) => {
+    const listItems = items.map((it)=>{
+        if(it.id === id){
+            return {...it, checked: !it.checked}
+        }else{
+            return it;
+        }
+    })
+    setItems(listItems);
+  }
+  
   const handleDelete = (id) => {
       const listItems = items.filter((it) => it.id !== id);
-      setAndSaveItems(listItems);
+      setItems(listItems);
   }
+  
   const handleSubmit = (e)=>{
     e.preventDefault();
     if(!newItems) return;
     addItem(newItems);
     setNewItems('');
-    console.log(newItems);
   }
+  
   return (
     // return JsX = Javascript + XML
     <div className="App">
