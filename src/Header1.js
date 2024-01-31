@@ -1,15 +1,15 @@
 const Header1 = () => {
-  const headerStyle = {
+/*   const headerStyle = {
       backgroundColor: 'gray',
       color: 'white' 
-  }
+  } */
   return (
     <header
     // style={{
     //   backgroundColor: 'gray',
     //   color: 'white'
     // }}
-    style={headerStyle}
+    // style={headerStyle}
     >
         <h1>Groceries list</h1>
     </header>
