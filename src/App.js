@@ -1,26 +1,24 @@
 import Content from './Content';
+import SearchItem from './SearchItem';
+import AddItems from './AddItems';
 import Header1 from './Header1';
 import Footer from './Footer';
-import {useState} from 'react'
+import {useState} from 'react';
 //can edit the functional components
 function App() {
-    const [items, setItems] = useState([
-      {
-          id: 1,
-          checked: false,
-          item: 'one half pound bag of cocoa covered almonds unsalted'
-      },
-      {
-          id: 2,
-          checked: true,
-          item: 'item 2'
-      },
-      {
-          id: 3,
-          checked: false,
-          item: 'item 3'
-      },
-    ]);
+    const [items, setItems] = useState(JSON.parse(localStorage.getItem('shoppingList')));
+    const setAndSaveItems = (listItems) => {
+      setItems(listItems);
+      localStorage.setItem('shoppingList', JSON.stringify(listItems));
+    }
+    const [newItems, setNewItems] = useState('');
+    const [search, setSearch] = useState('');
+    const addItem = (newItems) => {
+      const id = items.length ? items[items.length-1].id+1 : 1;
+      const myNewItem = {id, checked:false, item: newItems};
+      const listItems = [...items, myNewItem];
+      setAndSaveItems(listItems);
+    }
     const handleCheck = (id) => {
       const listItems = items.map((it)=>{
           if(it.id === id){
@@ -29,19 +27,33 @@ function App() {
               return it;
           }
       })
-      setItems(listItems);
-      localStorage.setItem('myShoppingList', JSON.stringify(listItems));
+      setAndSaveItems(listItems);
   }
   const handleDelete = (id) => {
       const listItems = items.filter((it) => it.id !== id);
-      setItems(listItems);
-      localStorage.setItem('myShoppingList', JSON.stringify(listItems));
+      setAndSaveItems(listItems);
+  }
+  const handleSubmit = (e)=>{
+    e.preventDefault();
+    if(!newItems) return;
+    addItem(newItems);
+    setNewItems('');
+    console.log(newItems);
   }
   return (
     // return JsX = Javascript + XML
     <div className="App">
-      <Header1 title="Grocery list" />
-      <Content items={items} setItems={setItems} handleCheck={handleCheck} handleDelete={handleDelete}/>
+      <Header1 title="Grocery list" z/>
+      <SearchItem 
+        search={search}
+        setSearch={setSearch}
+        />
+      <AddItems 
+        newItems = {newItems}
+        setNewItems = {setNewItems}
+        handleSubmit = {handleSubmit}
+      />
+      <Content items={items.filter(it => it.item.toLowerCase().includes(search.toLowerCase()))} setItems={setItems} handleCheck={handleCheck} handleDelete={handleDelete}/>
       <Footer length={items.length}/>
     </div>
   );
