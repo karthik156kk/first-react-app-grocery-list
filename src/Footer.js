@@ -1,9 +1,11 @@
 import React from 'react'
-const today = new Date();
-const Footer = () => {
+const Footer = ({length}) => {
   return (
-    <footer>Copyright &copy; {today.getFullYear()}</footer>
+    <footer>
+        <p>{length} list {length<2? 'item' : 'items'} are there</p>
+    </footer>
   )
 }
+
 
 export default Footer

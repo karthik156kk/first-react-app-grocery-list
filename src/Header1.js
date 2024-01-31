@@ -1,4 +1,8 @@
-const Header1 = () => {
+import React from 'react'
+const Header1 = (
+                  // props
+                  {title} //like object destructuring
+                  ) => {
 /*   const headerStyle = {
       backgroundColor: 'gray',
       color: 'white' 
@@ -11,9 +15,12 @@ const Header1 = () => {
     // }}
     // style={headerStyle}
     >
-        <h1>Groceries list</h1>
+        <h1>{title}</h1>
     </header>
   )
 }
 
+Header1.defaultProps = {
+  title : 'default title '
+}
 export default Header1
