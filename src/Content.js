@@ -1,7 +1,8 @@
 import ItemList1 from "./ItemList1"
 const Content = ({items, setItems, handleCheck, handleDelete}) => {
     return (
-        <main>
+        <>
+        {/* fragements uses parent component's element here <main></main> */}
             {items.length? 
                 (
                     <ItemList1 
@@ -16,7 +17,7 @@ const Content = ({items, setItems, handleCheck, handleDelete}) => {
                     </p>
                 )
             }
-        </main>
+        </>
     )
 }
 

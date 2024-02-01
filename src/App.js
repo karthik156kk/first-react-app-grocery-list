@@ -9,9 +9,26 @@ function App() {
 const API_URL = 'http://localhost:3500/items';
 //will be used in the next chapter with Fetch API data
   const [items, setItems] = useState([]);
+  const [fetchError, setFetchError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(()=>{
-
+    const fetchData = async() => {
+      try{
+        const response = await fetch(API_URL);
+        if(!response.ok) throw Error('Did not recieve expected data')
+        const listItems = await response.json();
+        setItems(listItems);
+        setFetchError(null);
+        setIsLoading(false);
+      } catch(err){
+        setFetchError(err.message)
+        setIsLoading(false);
+      }
+    }
+    setTimeout(()=>{
+      fetchData();
+    }, 2000)
   }, [])
   
   const [newItems, setNewItems] = useState('');
@@ -60,7 +77,18 @@ const API_URL = 'http://localhost:3500/items';
         setNewItems = {setNewItems}
         handleSubmit = {handleSubmit}
       />
-      <Content items={items.filter(it => it.item.toLowerCase().includes(search.toLowerCase()))} setItems={setItems} handleCheck={handleCheck} handleDelete={handleDelete}/>
+      <main>
+        {isLoading && <p>Your list is loading</p>}
+
+        {fetchError && <p style={{backgroundColor: 'red'}}>{fetchError}</p>}
+
+        {!fetchError && !isLoading && <Content 
+          items={items.filter(it => it.item.toLowerCase().includes(search.toLowerCase()))} 
+          setItems={setItems} 
+          handleCheck={handleCheck} 
+          handleDelete={handleDelete}
+        />}
+      </main>
       <Footer length={items.length}/>
     </div>
   );
