@@ -18,7 +18,17 @@
     {
       "id": 4,
       "checked": false,
-      "item": "berserk"
+      "item": "hi"
+    },
+    {
+      "id": 5,
+      "checked": false,
+      "item": "hello"
+    },
+    {
+      "id": 6,
+      "checked": false,
+      "item": "how are you"
     }
   ]
 }
