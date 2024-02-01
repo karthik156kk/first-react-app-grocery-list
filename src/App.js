@@ -7,7 +7,7 @@ import {useState, useEffect} from 'react';
 //can edit the functional components
 function App() {
 const API_URL = 'http://localhost:3500/items';
-
+//will be used in the next chapter with Fetch API data
   const [items, setItems] = useState([]);
 
   useEffect(()=>{
